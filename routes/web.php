@@ -31,3 +31,5 @@ Route::get('/articles/{article}/edit', 'ArticlesController@edit');
 Route::put('/articles/{article}' , 'ArticlesController@update');
 
 
+Route::get('/contact', 'ContactController@show');
+Route::post('/contact', 'ContactController@store');
