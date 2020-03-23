@@ -5,20 +5,22 @@ namespace App\Notifications;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Notifications\Messages\NexmoMessage;
 use Illuminate\Notifications\Notification;
 
 class PaymentRecieve extends Notification
 {
     use Queueable;
+    private $ammount;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($ammount)
     {
-        //
+        $this->ammount = $ammount;
     }
 
     /**
@@ -29,7 +31,7 @@ class PaymentRecieve extends Notification
      */
     public function via($notifiable)
     {
-        return ['mail'];
+        return ['mail', 'database', 'nexmo'];
     }
 
     /**
@@ -47,6 +49,12 @@ class PaymentRecieve extends Notification
                     ->line('Thank you for using our application!');
     }
 
+    public function toNexmo($notifiable)
+    {
+        return (new NexmoMessage())
+            ->content('Your payment wait for accept!!!');
+    }
+
     /**
      * Get the array representation of the notification.
      *
@@ -56,7 +64,9 @@ class PaymentRecieve extends Notification
     public function toArray($notifiable)
     {
         return [
-            //
+            'ammount' => $this->ammount,
         ];
     }
+
+
 }

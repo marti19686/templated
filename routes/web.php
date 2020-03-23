@@ -36,7 +36,7 @@ Route::post('/contact', 'ContactController@store');
 
 Route::get('payments/create', 'PaymentsContoller@create')->middleware('auth');
 Route::post('payments', 'PaymentsContoller@store')->middleware('auth');
-
+Route::get('notifications', 'UserNotificationsController@show')->middleware('auth');
 
 
 Auth::routes();
